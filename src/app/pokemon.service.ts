@@ -16,6 +16,7 @@ export class PokemonService {
         const id: number = idx + base + 1;
         return {
           name: item.name,
+          height: item.height,
           id
         };
       }));

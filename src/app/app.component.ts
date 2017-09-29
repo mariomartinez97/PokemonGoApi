@@ -55,6 +55,7 @@ export class AppComponent {
     this.pokemonEvolutionService.getPokemon(this.pokemon.length,9)
     .then(a => {
       this.pokemonTest = a
+      console.log(this.pokemonTest);
     });
      
   }
