@@ -22,10 +22,14 @@ export class AppComponent {
   ) { }
 
   ngOnInit() {
+    
+    console.log('AHHHHHHH');
     this.loadMore();
+    
   }
 
   loadMore() {
+    console.log("is loading");
     this.isLoading = true;
 
     this.pokemonService.getPokemon(this.pokemon.length, 151)
@@ -36,12 +40,12 @@ export class AppComponent {
         this.pokemon = this.pokemon.concat(pokemon);
         this.isLoading = false;
         this.error = false;
-        console.log('C');
         console.log(this.pokemon);
       })
       .catch(() => {
         this.error = true;
         this.isLoading = false;
+        console.log("ERROR");
       });      
       
       this.test();
