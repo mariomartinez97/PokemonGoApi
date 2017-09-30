@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http , Headers} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { Pokemon } from './pokemon';
+import { PokemonEvolutions } from './pokemon-evolution';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -14,10 +14,11 @@ export class PokemonEvolutionService {
   
   constructor(private http: Http) { }
 
-  getPokemon(base: number, limit: number): Promise<Pokemon[]> {
-    return this.http.get(`${this.ApiUrl}?offset=${base}&limit=${limit}`)
+  getPokemon(url: string): Promise<PokemonEvolutions> {
+    return this.http.get(url)
       .toPromise()
-      .then(response => response.json().data as Pokemon[]) 
+      .then(response => response.json().chain as PokemonEvolutions) 
       .catch();     
   }
 }
+
