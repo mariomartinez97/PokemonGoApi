@@ -10,12 +10,12 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class PokemonEvolutionService {
-  private ApiUrl: string = 'https://pokeapi.co/api/v2/pokemon/';
+  private ApiUrl: string = 'https://pokeapi.co/api/v2/evolution-chain/';
   
   constructor(private http: Http) { }
 
-  getPokemon(url: string): Promise<PokemonEvolutions> {
-    return this.http.get(url)
+  getPokemon(id: number): Promise<PokemonEvolutions> {
+    return this.http.get(`${this.ApiUrl}${id}/`)
       .toPromise()
       .then(response => response.json().chain as PokemonEvolutions) 
       .catch();     
