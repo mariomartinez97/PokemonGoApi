@@ -17,6 +17,7 @@ export class EvolutionDetail2 {
     
 export class Species {
     name: string;
+    actualLevel: number;
 }
     
 export class EvolvesTo2 {

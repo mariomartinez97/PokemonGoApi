@@ -24,7 +24,7 @@
     <tr *ngFor="let p of pokemons; let i = index">
       <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
       <td class="align-mid">{{p.species.name}}</td>
-      <td class="align-mid"(click)='addToBag(p)'><button>Add to bag</button></td>
+      <td class="align-mid"(click)='addToBagPokemons(p)'><button>Add to bag</button></td>
     </tr>
   </tbody>
 </table>
@@ -38,9 +38,10 @@
   <table class="table table-hover" width="100%">
       <thead class="text-success">
         <tr>
-          <th width="35%">Name</th>
-          <th width="10%">Level</th>
-          <th width="5%"></th>
+          <th align="align-left" width="35%">Name</th>
+          <th align="align-left" width="10%">Level</th>          
+          <th align="align-left" width="10%">Evolve Level</th>
+          <th align="align-mid" width="5%"></th>
         </tr>
       </thead>
       
@@ -49,9 +50,10 @@
         <!-- <td>{{pokemons[1].species.name}}</td> -->
         <tr *ngFor="let p of bag; let i = index">
           <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
-          <td class="align-mid">{{p.species.name}}</td>
-          <td class="align-mid">{{p.evolves_to[0].evolution_details[0].min_level}}</td>          
-          <td class="align-mid"><button>Remove from bag</button></td>
+          <td align=align-right>{{p.species.name}}</td>
+          <td class="align-right">{{p.species.actualLevel}}</td>                    
+          <td class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>          
+          <td class="align-right"><button>Remove from bag</button></td>
         </tr>
       </tbody>
     </table>
