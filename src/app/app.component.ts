@@ -28,6 +28,8 @@ export class AppComponent {
   showB: boolean = false;
   bag: PokemonEvolutions[] = [];
   items : Item [] = [];
+  
+  evolutionText: string = "Rare cady +1";   //this string will be permanent unless funtion determines is ready to "evolve"
 
   constructor(
     private pokemonService: PokemonService,
@@ -47,12 +49,12 @@ export class AppComponent {
 
   loadMore() {
     console.log("is loading");
-      this.test();
+      this.getPokemons();
       this.getItems();
   }
 
-  test(){
-    for (let j = 6; j < 8; j++){
+  getPokemons(){
+    for (let j = 2; j < 8; j++){
       this.pokemonEvolutionService.getPokemon(j)
       .then(b => {
         this.pokemonTest = b
@@ -86,7 +88,7 @@ export class AppComponent {
 
     }
   
-  evolution(index){
+  checkEvolution(index){
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       //Evolve
     }
@@ -95,6 +97,12 @@ export class AppComponent {
     }
     
     console.log(this.pokemons);    
+  }
+
+  test(index: number){
+    this.bag[index].species.actualLevel ++;
+    this.checkEvolution(index);
+    console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
   }
 
   getItems(){
