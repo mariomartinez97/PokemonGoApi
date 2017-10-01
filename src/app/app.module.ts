@@ -11,6 +11,9 @@ import { AppMaterialModule } from './app-material.module';
 
 import { PokemonService } from './pokemon.service';
 import { PokemonEvolutionService } from './pokemon-evolution.service';
+import { ItemsService } from './items.service';
+
+
 import { CapitalizePipe } from './capitalize.pipe';
 
 import 'hammerjs';
@@ -31,7 +34,9 @@ import 'hammerjs';
   ],
   providers: [
     PokemonService,
-    PokemonEvolutionService],
+    PokemonEvolutionService,
+    ItemsService
+  ],
   // entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })

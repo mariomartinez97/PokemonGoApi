@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 
 import { PokemonService } from './pokemon.service';
 import { PokemonEvolutionService } from './pokemon-evolution.service';
+import { ItemsService } from './items.service';
 
 import { Pokemon } from './pokemon';
 import { PokemonEvolutions } from './pokemon-evolution';
+import { Item } from './items';
+
 
 @Component({
   selector: 'app-root',
@@ -24,10 +27,12 @@ export class AppComponent {
   showP: boolean = true;
   showB: boolean = false;
   bag: PokemonEvolutions[] = [];
+  items : Item [] = [];
 
   constructor(
     private pokemonService: PokemonService,
-    private pokemonEvolutionService: PokemonEvolutionService    
+    private pokemonEvolutionService: PokemonEvolutionService,
+    private itemsService: ItemsService
   ) { }
 
   ngOnInit() {
@@ -40,15 +45,16 @@ export class AppComponent {
   loadMore() {
     console.log("is loading");
       this.test();
+      this.getItems();
   }
 
   test(){
-    for (let j = 4; j < 8; j++){
+    for (let j = 1; j < 78; j++){
       this.pokemonEvolutionService.getPokemon(j)
       .then(b => {
         this.pokemonTest = b
           this.pokemons.push(this.pokemonTest);      
-        // console.log(this.pokemonTest);
+        console.log(this.pokemonTest);
         // console.log("Baby Polemons names");
         // console.log(this.babyPokemons);
         });   
@@ -79,6 +85,16 @@ export class AppComponent {
     //   this.showP = true;
     // }
     console.log(this.pokemons);    
+  }
+
+  getItems(){
+    this.itemsService.getItems(45,52)
+    .then(res => {
+      this.items = res
+      console.log(this.items);
+    });
+
+
   }
 
 
