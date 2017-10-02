@@ -2,6 +2,7 @@ export class PokemonEvolutions{
     evolution_details: EvolutionDetail;
     evolves_to: EvolvesTo;
     species: Species;
+    evolution_info: EvolutionInfo;
 }
 export class EvolutionDetail {
     min_level: number;            
@@ -53,6 +54,11 @@ export class RootObject {
     baby_trigger_item?: any;
     id: number;
     chain: Chain;
+}
+export class EvolutionInfo{
+    number_of_Evolutions: number;
+    status: string;
+    current_pokemon: string;
 }
     
     

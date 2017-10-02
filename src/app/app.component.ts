@@ -29,7 +29,6 @@ export class AppComponent {
   bag: PokemonEvolutions[] = [];
   items : Item [] = [];
   
-  evolutionText: string = "Rare cady +1";   //this string will be permanent unless funtion determines is ready to "evolve"
 
   constructor(
     private pokemonService: PokemonService,
@@ -54,16 +53,32 @@ export class AppComponent {
   }
 
   getPokemons(){
-    for (let j = 2; j < 8; j++){
+    for (let j = 1; j < 8; j++){
       this.pokemonEvolutionService.getPokemon(j)
       .then(b => {
         this.pokemonTest = b
-          this.pokemons.push(this.pokemonTest);      
-        console.log(this.pokemonTest);
+          this.pokemons.push(this.pokemonTest);   
+          // console.log(this.pokemons);   
+        // console.log(this.pokemonTest);
         // console.log("Baby Polemons names");
         // console.log(this.babyPokemons);
         });   
       }     
+
+    // this.pokemonEvolutionService.getPokemon(19)
+    // .then(b => {
+    //   this.pokemonTest = b
+    //     this.pokemons.push(this.pokemonTest);   
+    //     if(this.pokemonTest.evolves_to[0].evolution_details[0].evolves_to == null){
+    //     console.log("Should be null");
+    //     }
+    //     else{
+    //       console.log("didnt work");
+    //       console.log(this.pokemonTest.evolves_to[0].evolution_details[0]);
+    //     }
+    //   // console.log("Baby Polemons names");
+    //   // console.log(this.babyPokemons);
+    //   });   
     }
 
     addToBagPokemons(pokemon: PokemonEvolutions){
@@ -73,14 +88,16 @@ export class AppComponent {
           pokemon.species.actualLevel = this.getRandomInt(1,pokemon.evolves_to[0].evolution_details[0].min_level);
           this.bag.push(pokemon);
           console.log(pokemon.species.name + "has been added");
-          console.log(this.bag)
+          // console.log(this.bag)
         }
         else{
           console.log("No min level")
           this.bag.push(pokemon);          
         }
-        //console.log(this.bag[1].evolves_to[0].species.name);                     //read firt evolution name
-        //console.log(this.bag[1].evolves_to[0].evolution_details[0].min_level);   //read first evolution min level
+        //console.log(this.bag[0].evolves_to[0].species.name);                     //read firt evolution name
+        //console.log(this.bag[0].evolves_to[0].evolution_details[0].min_level);   //read first evolution min level
+        //console.log(this.bag[0].evolves_to[0].evolution_details[0].evolves_to[0].species);   //read second evolution name
+        //console.log(this.bag[0].evolves_to[0].evolution_details[0].evolves_to[0].evolution_details[0].min_level);   //read second evolution min level
       }
       else{
          console.log ("This is on the bag");
@@ -91,28 +108,50 @@ export class AppComponent {
   checkEvolution(index){
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       //Evolve
+      
     }
     else{
+      //this.evolutionText = 'You need _____ item to evolve this pokemon';
       //Tell the user it needs more rare candy or a special item
     }
     
-    console.log(this.pokemons);    
+    //console.log(this.pokemons);    
   }
 
   test(index: number){
     this.bag[index].species.actualLevel ++;
-    this.checkEvolution(index);
-    console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
+
+    // console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
+    if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
+      this.bag[index].evolution_info.status = 'Evolve Pokemon';      
+    }
+
   }
 
   getItems(){
-    this.itemsService.getItems(45,52)
+    this.itemsService.getItems(45,52)    
     .then(res => {
       this.items = res
-      console.log(this.items);
+      // console.log(this.items);
     });
+  }
 
-
+  private pokemonInfo(){
+    let counter: number = 0;
+    this.pokemons.forEach(element => {
+      // element.evolution_info.status = '+1 Rare Candy';
+      if(element.evolves_to[0] == null){
+        element.evolution_info.number_of_Evolutions = 0;
+        // element.evolution_info.status = 'No more evolutions'
+      }
+      else if(element.evolves_to[0].evolution_details[0].evolves_to == null){
+        element.evolution_info.number_of_Evolutions = 1;       
+      }
+      else if(element.evolves_to[0].evolution_details[0].evolves_to != null){
+        element.evolution_info.number_of_Evolutions = 2;
+      }      
+    });    
+    
   }
 
    getRandomInt(min, max): number {
