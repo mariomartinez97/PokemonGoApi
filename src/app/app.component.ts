@@ -19,7 +19,6 @@ export class AppComponent {
   pokemonTest: PokemonEvolutions;  
   pokemons: PokemonEvolutions[] = [];
 
-
   isLoading: boolean = false;
   error: boolean = false;
   babyPokemons: string[] = [];
@@ -58,7 +57,8 @@ export class AppComponent {
       .then(b => {
         this.pokemonTest = b
           this.pokemons.push(this.pokemonTest);   
-          // console.log(this.pokemons);   
+          console.log(this.pokemons);
+          this.pokemonInfo();
         // console.log(this.pokemonTest);
         // console.log("Baby Polemons names");
         // console.log(this.babyPokemons);
@@ -108,9 +108,13 @@ export class AppComponent {
   checkEvolution(index){
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       //Evolve
-      
+      this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
+      this.bag[index].species.actualLevel = this.bag[index].evolves_to[0].evolution_details[0].min_level;
+      //this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolution_details[0].evolves_to[0].evolution_details[0].min_level;
+     
     }
     else{
+      console.log("Cant evolve yet");
       //this.evolutionText = 'You need _____ item to evolve this pokemon';
       //Tell the user it needs more rare candy or a special item
     }
@@ -119,11 +123,21 @@ export class AppComponent {
   }
 
   test(index: number){
+    
+    if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
+      console.log("Ready to evolve");
+      this.bag[index].species.status = 'Evolve Pokemon';      
+    }
+
+
     this.bag[index].species.actualLevel ++;
 
     // console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
-      this.bag[index].evolution_info.status = 'Evolve Pokemon';      
+      console.log("Ready to evolve");
+      this.bag[index].species.status = 'Evolve Pokemon';      
+      
+      //this.bag[index].evolution_info.status = 'Evolve Pokemon';      
     }
 
   }
@@ -137,18 +151,18 @@ export class AppComponent {
   }
 
   private pokemonInfo(){
-    let counter: number = 0;
+    let counter: number = 0;    
     this.pokemons.forEach(element => {
-      // element.evolution_info.status = '+1 Rare Candy';
+      element.species.status = 'Need more candy to evolve';
       if(element.evolves_to[0] == null){
-        element.evolution_info.number_of_Evolutions = 0;
+        element.species.number_of_Evolutions = 0;
         // element.evolution_info.status = 'No more evolutions'
       }
       else if(element.evolves_to[0].evolution_details[0].evolves_to == null){
-        element.evolution_info.number_of_Evolutions = 1;       
+        element.species.number_of_Evolutions = 1;       
       }
       else if(element.evolves_to[0].evolution_details[0].evolves_to != null){
-        element.evolution_info.number_of_Evolutions = 2;
+        element.species.number_of_Evolutions = 2;
       }      
     });    
     

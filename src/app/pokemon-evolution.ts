@@ -19,6 +19,9 @@ export class EvolutionDetail2 {
 export class Species {
     name: string;
     actualLevel: number;
+    number_of_Evolutions: number;
+    current_pokemon: number;    
+    status: string;
 }
     
 export class EvolvesTo2 {
@@ -57,8 +60,8 @@ export class RootObject {
 }
 export class EvolutionInfo{
     number_of_Evolutions: number;
+    current_pokemon: number;    
     status: string;
-    current_pokemon: string;
 }
     
     

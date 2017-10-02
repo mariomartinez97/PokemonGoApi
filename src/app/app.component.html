@@ -53,8 +53,9 @@
           <td align=align-right>{{p.species.name}}</td>
           <td class="align-right">{{p.species.actualLevel}}</td>                    
           <td class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
-          <td class="align-right">{{p.evolution_info.status}}</td>     
-          <td class="align-right"(click)='test(i)'><button>Remove from bag</button></td>
+          <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
+          <td class="align-right"(click)='test(i)'><button>Add rare candy</button></td>          
+          <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
         </tr>
       </tbody>
     </table>
