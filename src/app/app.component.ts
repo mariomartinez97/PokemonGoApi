@@ -47,11 +47,11 @@ export class AppComponent {
   loadMore() {
     console.log("is loading");
       this.getPokemons();
-      this.getItems();
+      //this.getItems();
   }
 
   getPokemons(){
-    for (let j = 1; j < 8; j++){
+    for (let j = 2; j < 28; j++){
       this.pokemonEvolutionService.getPokemon(j)
       .then(b => {
         this.pokemonTest = b
@@ -85,11 +85,13 @@ export class AppComponent {
   
       if(!this.bag.some(y => y.species.name == pokemon.species.name)){
         //check if there is a min level or item to be able to evolve
-        if(pokemon.evolves_to[0].evolution_details[0].min_level != null){
+        if(pokemon.species.number_of_Evolutions != null){
+          
           pokemon.species.actualLevel = this.getRandomInt(1,pokemon.evolves_to[0].evolution_details[0].min_level);
           deepCopy = JSON.parse(JSON.stringify(pokemon));
           this.bag.push(deepCopy);
           console.log(pokemon.species.name + "has been added");
+          console.log(deepCopy);
           // console.log(this.bag)
           // x = JSON.parse(JSON.stringify(que quiero copiar)) deep copy
         }
@@ -109,19 +111,34 @@ export class AppComponent {
     }
   
   checkEvolution(index){
-    if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
-      //Evolve
-      this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
-      this.bag[index].species.actualLevel = this.bag[index].evolves_to[0].evolution_details[0].min_level;
-      //this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolution_details[0].evolves_to[0].evolution_details[0].min_level;
-     
+      //Check if has evolutions
+    if(this.bag[index].species.number_of_Evolutions == 1 || this.bag[index].species.number_of_Evolutions == 2){
+      //Check if its on the first evolution going to the second one     RESOLVER .species.status;
+      if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
+      && this.bag[index].species.current_pokemon == 1){
+          //Evolve
+          this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
+          this.bag[index].species.current_pokemon ++;
+
+          if(this.bag[index].species.number_of_Evolutions == 2){
+            this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level; 
+            this.bag[index].evolves_to[0].species.name = this.bag[index].evolves_to[0].evolves_to[0].species.name;   
+          }
+      }
+      //Check if its on the second evolution stop evolutions     RESOLVER .species.status;
+      else if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
+        && this.bag[index].species.current_pokemon == 2){
+          //Evolve
+          this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
+          this.bag[index].species.current_pokemon ++;
+          //tell the user no more evolutions .species.status                         
+      }  
     }
     else{
       console.log("Cant evolve yet");
       //this.evolutionText = 'You need _____ item to evolve this pokemon';
       //Tell the user it needs more rare candy or a special item
-    }
-    
+    }        
     //console.log(this.pokemons);    
   }
 
@@ -157,16 +174,18 @@ export class AppComponent {
     let counter: number = 0;    
     this.pokemons.forEach(element => {
       element.species.status = 'Need more candy to evolve';
+      element.species.current_pokemon = 1;
       if(element.evolves_to[0] == null){
         element.species.number_of_Evolutions = 0;
         // element.evolution_info.status = 'No more evolutions'
       }
+      else if(element.evolves_to[0].evolution_details[0].evolves_to != null){
+        element.species.number_of_Evolutions = 2;
+      }
       else if(element.evolves_to[0].evolution_details[0].evolves_to == null){
         element.species.number_of_Evolutions = 1;       
       }
-      else if(element.evolves_to[0].evolution_details[0].evolves_to != null){
-        element.species.number_of_Evolutions = 2;
-      }      
+            
     });    
     
   }

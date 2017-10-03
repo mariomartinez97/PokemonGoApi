@@ -2,7 +2,6 @@ export class PokemonEvolutions{
     evolution_details: EvolutionDetail;
     evolves_to: EvolvesTo;
     species: Species;
-    evolution_info: EvolutionInfo;
 }
 export class EvolutionDetail {
     min_level: number;            

@@ -5,9 +5,7 @@
 </div> -->
 <md-card>
   <!-- <button(click)="evolution()">Check Evolutions</button>       -->
-  <td (click)='evolution()' class="align-mid"><button>Check Evolutoins</button></td>
 
-  <div>
   <h1>THIS ARE THE  POKEMONS</h1>  
 <table class="table table-hover" width="100%">
   <thead class="text-success">
@@ -28,7 +26,7 @@
     </tr>
   </tbody>
 </table>
-</div>
+
 
 
 <div >
@@ -52,7 +50,7 @@
           <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
           <td align=align-right>{{p.species.name}}</td>
           <td class="align-right">{{p.species.actualLevel}}</td>                    
-          <td class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
+          <td  class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
           <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
           <td class="align-right"(click)='test(i)'><button>Add rare candy</button></td>          
           <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
@@ -63,4 +61,36 @@
 
 
 </div>
+
+<div>
+
+    <h1>THIS ARE THE ITEMS</h1>
+    <!-- <h2>These are your Pokemons</h2> -->
+    <table class="table table-hover" width="100%">
+        <thead class="text-success">
+          <tr>
+            <th align="align-left" width="35%">Items</th>
+            <!-- <th align="align-left" width="10%">Level</th>          
+            <th align="align-left" width="10%">Evolve Level</th> -->
+            <th align="align-mid" width="5%">Add to bag</th>
+          </tr>
+        </thead>
+        
+      
+        <tbody>
+          <!-- <td>{{pokemons[1].species.name}}</td> -->
+          <tr *ngFor="let i of items; let i = index">
+            <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
+            <!-- <td align=align-right>{{i.name}}</td> -->
+            <!-- <td class="align-right">{{p.species.actualLevel}}</td>                    
+            <td class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
+            <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
+            <!-- <td class="align-right"(click)='test(i)'><button>Add rare candy</button></td>           --> 
+            <td class="align-right"><button>+</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+
 </md-card>
