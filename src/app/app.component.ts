@@ -18,7 +18,6 @@ export class AppComponent {
   pokemon: Pokemon[] = [];
   pokemonTest: PokemonEvolutions;  
   pokemons: PokemonEvolutions[] = [];
-
   isLoading: boolean = false;
   error: boolean = false;
   babyPokemons: string[] = [];
@@ -82,13 +81,17 @@ export class AppComponent {
     }
 
     addToBagPokemons(pokemon: PokemonEvolutions){
+    let deepCopy: PokemonEvolutions ;
+  
       if(!this.bag.some(y => y.species.name == pokemon.species.name)){
         //check if there is a min level or item to be able to evolve
         if(pokemon.evolves_to[0].evolution_details[0].min_level != null){
           pokemon.species.actualLevel = this.getRandomInt(1,pokemon.evolves_to[0].evolution_details[0].min_level);
-          this.bag.push(pokemon);
+          deepCopy = JSON.parse(JSON.stringify(pokemon));
+          this.bag.push(deepCopy);
           console.log(pokemon.species.name + "has been added");
           // console.log(this.bag)
+          // x = JSON.parse(JSON.stringify(que quiero copiar)) deep copy
         }
         else{
           console.log("No min level")
