@@ -51,7 +51,7 @@ export class AppComponent {
   }
 
   getPokemons(){
-    for (let j = 2; j < 28; j++){
+    for (let j = 2; j < 8; j++){
       this.pokemonEvolutionService.getPokemon(j)
       .then(b => {
         this.pokemonTest = b
@@ -113,8 +113,17 @@ export class AppComponent {
   checkEvolution(index){
       //Check if has evolutions
     if(this.bag[index].species.number_of_Evolutions == 1 || this.bag[index].species.number_of_Evolutions == 2){
-      //Check if its on the first evolution going to the second one     RESOLVER .species.status;
+      //Check if its on the second evolution stop evolutions     RESOLVER .species.status;
       if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
+        && this.bag[index].species.current_pokemon == 2){
+          //Evolve
+          this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
+          this.bag[index].species.current_pokemon ++;
+          this.bag[index].species.status = "No more evolutions";
+          //tell the user no more evolutions .species.status                         
+      }
+      //Check if its on the first evolution going to the second one     RESOLVER .species.status;
+      else if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
       && this.bag[index].species.current_pokemon == 1){
           //Evolve
           this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
@@ -123,16 +132,11 @@ export class AppComponent {
           if(this.bag[index].species.number_of_Evolutions == 2){
             this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level; 
             this.bag[index].evolves_to[0].species.name = this.bag[index].evolves_to[0].evolves_to[0].species.name;   
+            console.log(this.bag[index]);
           }
+          else{ this.bag[index].species.status = "No more evolutions"; }
       }
-      //Check if its on the second evolution stop evolutions     RESOLVER .species.status;
-      else if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
-        && this.bag[index].species.current_pokemon == 2){
-          //Evolve
-          this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
-          this.bag[index].species.current_pokemon ++;
-          //tell the user no more evolutions .species.status                         
-      }  
+        
     }
     else{
       console.log("Cant evolve yet");
@@ -146,6 +150,7 @@ export class AppComponent {
     
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       console.log("Ready to evolve");
+      console.log(this.bag[index]);
       this.bag[index].species.status = 'Evolve Pokemon';      
     }
 
@@ -179,12 +184,16 @@ export class AppComponent {
         element.species.number_of_Evolutions = 0;
         // element.evolution_info.status = 'No more evolutions'
       }
-      else if(element.evolves_to[0].evolution_details[0].evolves_to != null){
+      else if(element.evolves_to[0].evolves_to[0] != null){
         element.species.number_of_Evolutions = 2;
       }
-      else if(element.evolves_to[0].evolution_details[0].evolves_to == null){
+      else if(element.evolves_to[0].evolution_details[0] != null){
+        // element.evolves_to.evolves_to[0];
         element.species.number_of_Evolutions = 1;       
       }
+      
+      
+      
             
     });    
     
