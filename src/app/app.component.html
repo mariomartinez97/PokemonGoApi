@@ -56,12 +56,11 @@
           <td class="align-right">{{p.species.item1}}</td>
           <td class="align-right"(click)='test(i)'><button>Level Up</button></td>                 
           <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
+          <td class="align-right" onclick="window.scrollTo(0, 1800)" (click)='pokemonDetails(p.species.name)'><button>See details</button></td>
+          
         </tr>
       </tbody>
     </table>
-
-
-
 </div>
 
 <div>

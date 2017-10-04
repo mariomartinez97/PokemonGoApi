@@ -26,7 +26,7 @@ export class AppComponent {
   showB: boolean = false;
   bag: PokemonEvolutions[] = [];
   items : Item [] = [];
-  
+  testP :Pokemon;
 
   constructor(
     private pokemonService: PokemonService,
@@ -37,8 +37,7 @@ export class AppComponent {
   ngOnInit() {
     
     console.log('AHHHHHHH');
-    console.log(Math.floor(Math.random() * 6) + 2);
-    
+    console.log(Math.floor(Math.random() * 6) + 2);    
     
     this.loadMore();
     
@@ -90,6 +89,7 @@ export class AppComponent {
           pokemon.species.actualLevel = this.getRandomInt(1,pokemon.evolves_to[0].evolution_details[0].min_level);
           deepCopy = JSON.parse(JSON.stringify(pokemon));
           this.bag.push(deepCopy);
+          this.checkItemAdded();
           console.log(pokemon.species.name + "has been added");
           console.log(deepCopy);
           // console.log(this.bag)
@@ -99,10 +99,6 @@ export class AppComponent {
           console.log("No min level")
           this.bag.push(pokemon);          
         }
-        //console.log(this.bag[0].evolves_to[0].species.name);                     //read firt evolution name
-        //console.log(this.bag[0].evolves_to[0].evolution_details[0].min_level);   //read first evolution min level
-        //console.log(this.bag[0].evolves_to[0].evolution_details[0].evolves_to[0].species);   //read second evolution name
-        //console.log(this.bag[0].evolves_to[0].evolution_details[0].evolves_to[0].evolution_details[0].min_level);   //read second evolution min level
       }
       else{
          console.log ("This is on the bag");
@@ -160,20 +156,25 @@ export class AppComponent {
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       console.log("Ready to evolve");
       console.log(this.bag[index]);
-      this.bag[index].species.status = 'Evolve Pokemon';      
+      this.bag[index].species.status = 'Evolve';      
     }
-
-
     this.bag[index].species.actualLevel ++;
-
     // console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       console.log("Ready to evolve");
-      this.bag[index].species.status = 'Evolve Pokemon';      
-      
+      this.bag[index].species.status = 'Evolve';            
       //this.bag[index].evolution_info.status = 'Evolve Pokemon';      
     }
+  }
 
+  checkItemAdded(){
+    let index: number = this.bag.length - 1;
+    if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
+      this.bag[index].species.status = 'Evolve';
+    }
+    if(this.bag[index].evolves_to[0].evolution_details[0].min_level == null){
+      this.bag[index].species.status = 'Evolve';
+    }
   }
 
   getItems(){
@@ -215,17 +216,22 @@ export class AppComponent {
             element.species.item1 = deepCopy;        
           }
         }              
-      }
-      
-      
-      
-            
+      }     
     });    
     
   }
 
    getRandomInt(min, max): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  pokemonDetails(pokemon: string){
+    this.pokemonService.getPokemon(pokemon)
+    .then (resp => {
+      this.testP = resp;
+      console.log(this.testP);
+    });
+
   }
 
 

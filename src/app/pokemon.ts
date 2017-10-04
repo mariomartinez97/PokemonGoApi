@@ -1,5 +1,6 @@
 export class Pokemon {
   id: number;
   name: string;
-  height:number;
+  height: number;
+  weight: number;
 }
