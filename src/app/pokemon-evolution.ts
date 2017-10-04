@@ -21,6 +21,8 @@ export class Species {
     number_of_Evolutions: number;
     current_pokemon: number;    
     status: string;
+    item1: string;
+    item2: string;
 }
     
 export class EvolvesTo2 {

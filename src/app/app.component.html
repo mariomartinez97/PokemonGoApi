@@ -39,6 +39,7 @@
           <th align="align-left" width="35%">Name</th>
           <th align="align-left" width="10%">Level</th>          
           <th align="align-left" width="10%">Evolve Level</th>
+          <th align="align-left" width="10%">Evolve Item</th>          
           <th align="align-mid" width="5%"></th>
         </tr>
       </thead>
@@ -52,7 +53,8 @@
           <td class="align-right">{{p.species.actualLevel}}</td>                    
           <td  class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
           <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
-          <td class="align-right"(click)='test(i)'><button>Add rare candy</button></td>          
+          <td class="align-right">{{p.species.item1}}</td>
+          <td class="align-right"(click)='test(i)'><button>Level Up</button></td>                 
           <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
         </tr>
       </tbody>

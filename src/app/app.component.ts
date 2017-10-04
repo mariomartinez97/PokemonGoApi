@@ -51,7 +51,7 @@ export class AppComponent {
   }
 
   getPokemons(){
-    for (let j = 2; j < 8; j++){
+    for (let j = 22; j < 28; j++){
       this.pokemonEvolutionService.getPokemon(j)
       .then(b => {
         this.pokemonTest = b
@@ -113,6 +113,11 @@ export class AppComponent {
   checkEvolution(index){
       //Check if has evolutions
     if(this.bag[index].species.number_of_Evolutions == 1 || this.bag[index].species.number_of_Evolutions == 2){
+      
+      //Check if it evolves with and item or not ---> should be able to check just for item 1
+
+
+
       //Check if its on the second evolution stop evolutions     RESOLVER .species.status;
       if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
         && this.bag[index].species.current_pokemon == 2){
@@ -130,6 +135,10 @@ export class AppComponent {
           this.bag[index].species.current_pokemon ++;
 
           if(this.bag[index].species.number_of_Evolutions == 2){
+            if(this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level == null){
+              //Tell the user he needs a specific item for the second evolution
+              this.bag[index].species.item1 = this.bag[index].species.item2;
+            }
             this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level; 
             this.bag[index].evolves_to[0].species.name = this.bag[index].evolves_to[0].evolves_to[0].species.name;   
             console.log(this.bag[index]);
@@ -176,7 +185,8 @@ export class AppComponent {
   }
 
   private pokemonInfo(){
-    let counter: number = 0;    
+    let counter: number = 0;  
+    let deepCopy: string;  
     this.pokemons.forEach(element => {
       element.species.status = 'Need more candy to evolve';
       element.species.current_pokemon = 1;
@@ -185,11 +195,26 @@ export class AppComponent {
         // element.evolution_info.status = 'No more evolutions'
       }
       else if(element.evolves_to[0].evolves_to[0] != null){
+        
         element.species.number_of_Evolutions = 2;
+
+        if(element.evolves_to[0].evolves_to[0].evolution_details[0].min_level == null){
+          //element.species.item2 = element.evolves_to[0].evolves_to[0].evolution_details[0].item.name;
+          if(element.evolves_to[0].evolves_to[0].evolution_details[0].item != null)
+          deepCopy = JSON.parse(JSON.stringify(element.evolves_to[0].evolves_to[0].evolution_details[0].item.name));
+          element.species.item2 = deepCopy;
+        }
       }
       else if(element.evolves_to[0].evolution_details[0] != null){
         // element.evolves_to.evolves_to[0];
-        element.species.number_of_Evolutions = 1;       
+        element.species.number_of_Evolutions = 1; 
+
+        if(element.evolves_to[0].evolution_details[0].min_level == null){
+          if(element.evolves_to[0].evolution_details[0].item != null){
+            deepCopy = JSON.parse(JSON.stringify(element.evolves_to[0].evolution_details[0].item.name))
+            element.species.item1 = deepCopy;        
+          }
+        }              
       }
       
       
