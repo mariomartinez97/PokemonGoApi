@@ -6,7 +6,7 @@
 <md-card>
   <!-- <button(click)="evolution()">Check Evolutions</button>       -->
 
-  <h1>THIS ARE THE  POKEMONS</h1>  
+  <h1>THESE ARE THE  POKEMONS</h1>  
 <table class="table table-hover" width="100%">
   <thead class="text-success">
     <tr>
@@ -45,27 +45,27 @@
       </thead>
       
     
-      <tbody>
+      <!-- <tbody>
         <!-- <td>{{pokemons[1].species.name}}</td> -->
-        <tr *ngFor="let p of bag; let i = index">
+        <!-- <tr *ngFor="let p of bag; let i = index">
           <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
-          <td align=align-right>{{p.species.name}}</td>
+          <!-- <td align=align-right>{{p.species.name}}</td>
           <td class="align-right">{{p.species.actualLevel}}</td>                    
-          <td  class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
+          <td  class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>   -->
           <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
-          <td class="align-right">{{p.species.item1}}</td>
+          <!-- <td class="align-right">{{p.species.item1}}</td>
           <td class="align-right"(click)='test(i)'><button>Level Up</button></td>                 
           <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
           <td class="align-right" onclick="window.scrollTo(0, 1800)" (click)='pokemonDetails(p.species.name)'><button>See details</button></td>
           
         </tr>
-      </tbody>
+      </tbody> --> 
     </table>
 </div>
 
 <div>
 
-    <h1>THIS ARE THE ITEMS</h1>
+    <h1>THESE ARE THE ITEMS</h1>
     <!-- <h2>These are your Pokemons</h2> -->
     <table class="table table-hover" width="100%">
         <thead class="text-success">
@@ -80,18 +80,73 @@
       
         <tbody>
           <!-- <td>{{pokemons[1].species.name}}</td> -->
-          <tr *ngFor="let i of items; let i = index">
-            <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
-            <!-- <td align=align-right>{{i.name}}</td> -->
-            <!-- <td class="align-right">{{p.species.actualLevel}}</td>                    
-            <td class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>  
-            <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
-            <!-- <td class="align-right"(click)='test(i)'><button>Add rare candy</button></td>           --> 
-            <td class="align-right"><button>+</button></td>
+          <tr *ngFor="let i of items">
+            <td align=align-right>{{i.name}}</td>            
+            <td class="align-right" (click)='addItem(i)'><button>+</button></td>
           </tr>
         </tbody>
       </table>
 
+</div>
+
+<h1>POKEMONS</h1>
+
+<div class="col-lg-8 col-md-12">
+  <div class="card" >
+      <div class="card-header" >
+          <h4 class="title">Pokemons</h4>
+      </div>
+      <div class="card-content table-responsive">
+          <table class="table table-hover">
+              <thead class="text-warning">
+                  <tr>
+                      <th>Name</th>
+                      <th>Level</th>
+                      <th>Evolution Level</th>
+                      <th>Evolution Item</th>
+                      <th></th>
+                      <th></th>                                            
+                  </tr>
+              </thead>
+              <tbody>
+                   <tr *ngFor="let p of bag; let i = index">
+                  
+                      <td onclick="window.scrollTo(0, 1800)" (click)='pokemonDetails(p.species.name)'>{{p.species.name}}</td>
+                      <td>{{p.species.actualLevel}}</td>
+                      <td>{{p.evolves_to[0].evolution_details[0].min_level}}</td>
+                      <td>{{p.species.item1}}</td>
+                      <td class="align-right"(click)='test(i)'><button>Level Up</button></td>                 
+                      <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
+                        
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+
+<div class="col-lg-4 col-md-12">
+  <div class="card" >
+      <div class="card-header" data-background-color="orange">
+          <h4 class="title">Items</h4>
+      </div>
+      <div class="card-content table-responsive">
+          <table class="table table-hover">
+              <thead class="text-warning">
+                  <tr>
+                      <th>Item</th>
+                      <th>Quantity</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let p of bagItems; let i = index">
+                      <td>{{p.name}}</td>
+                      <td>{{p.quantity}}</td>
+                  </tr>                  
+              </tbody>
+          </table>
+      </div>
+  </div>
 </div>
 
 </md-card>

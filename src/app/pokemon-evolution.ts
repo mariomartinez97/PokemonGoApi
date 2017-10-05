@@ -1,3 +1,10 @@
+import { Item } from './items';
+
+export class Bag{
+    pokemons: PokemonEvolutions[];
+    items:Item[];
+    }
+
 export class PokemonEvolutions{
     evolution_details: EvolutionDetail;
     evolves_to: EvolvesTo;

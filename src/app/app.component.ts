@@ -26,8 +26,10 @@ export class AppComponent {
   showB: boolean = false;
   bag: PokemonEvolutions[] = [];
   items : Item [] = [];
+  bagItems: Item[] = [];
   testP :Pokemon;
 
+  
   constructor(
     private pokemonService: PokemonService,
     private pokemonEvolutionService: PokemonEvolutionService,
@@ -46,7 +48,7 @@ export class AppComponent {
   loadMore() {
     console.log("is loading");
       this.getPokemons();
-      //this.getItems();
+      this.getItems();
   }
 
   getPokemons(){
@@ -180,8 +182,15 @@ export class AppComponent {
   getItems(){
     this.itemsService.getItems(45,52)    
     .then(res => {
-      this.items = res
+      this.items = res      
       // console.log(this.items);
+      this.updateItems();
+    });
+  }
+  private updateItems(){
+    this.items.forEach(element => {
+      element.quantity = 1;      
+      // console.log(element);
     });
   }
 
@@ -220,11 +229,9 @@ export class AppComponent {
     });    
     
   }
-
    getRandomInt(min, max): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
   pokemonDetails(pokemon: string){
     this.pokemonService.getPokemon(pokemon)
     .then (resp => {
@@ -234,7 +241,17 @@ export class AppComponent {
 
   }
 
-
+  addItem(item: Item){
+    let deepCopy: Item;    
+    if(!this.bagItems.some(y => y.name == item.name)){           
+        deepCopy = JSON.parse(JSON.stringify(item));
+        this.bagItems.push(deepCopy);        
+      }
+      else{
+        let index = this.bagItems.findIndex(x => x.name == item.name)    
+        this.bagItems[index].quantity ++;
+        console.log(this.bagItems)
+      }
+    }
 
 }
-
