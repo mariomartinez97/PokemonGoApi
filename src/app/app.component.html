@@ -94,7 +94,7 @@
 <div class="col-lg-8 col-md-12">
   <div class="card" >
       <div class="card-header" >
-          <h4 class="title">Pokemons</h4>
+          <h3 class="title">Pokemons</h3>
       </div>
       <div class="card-content table-responsive">
           <table class="table table-hover">
@@ -105,7 +105,8 @@
                       <th>Evolution Level</th>
                       <th>Evolution Item</th>
                       <th></th>
-                      <th></th>                                            
+                      <th></th> 
+                      <th>Remove</th>                       
                   </tr>
               </thead>
               <tbody>
@@ -115,9 +116,10 @@
                       <td>{{p.species.actualLevel}}</td>
                       <td>{{p.evolves_to[0].evolution_details[0].min_level}}</td>
                       <td>{{p.species.item1}}</td>
-                      <td class="align-right"(click)='test(i)'><button>Level Up</button></td>                 
-                      <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
-                        
+                      <td class="align-right"(click)='test(i)'><button>{{levelUp}}</button></td>                 
+                      <!-- <td (click)='checkEvolution(i)'><button [disabled]='!canEvolve'>{{p.species.status}}</button></td> -->
+                      <td (click)='checkEvolution(i)'><button [disabled]='!canEvolve'>{{p.species.status}}</button></td>                      
+                      <td (click) = 'removePokemon(i)'><button>x</button></td>                      
                   </tr>
               </tbody>
           </table>
@@ -127,8 +129,8 @@
 
 <div class="col-lg-4 col-md-12">
   <div class="card" >
-      <div class="card-header" data-background-color="orange">
-          <h4 class="title">Items</h4>
+      <div class="card-header">
+          <h3 class="title">Items</h3>
       </div>
       <div class="card-content table-responsive">
           <table class="table table-hover">
@@ -136,12 +138,14 @@
                   <tr>
                       <th>Item</th>
                       <th>Quantity</th>
+                      <th>Remove</th>
                   </tr>
               </thead>
               <tbody>
                   <tr *ngFor="let p of bagItems; let i = index">
                       <td>{{p.name}}</td>
                       <td>{{p.quantity}}</td>
+                      <td (click) = 'removeItem(i)'><button>x</button></td>
                   </tr>                  
               </tbody>
           </table>
@@ -150,3 +154,41 @@
 </div>
 
 </md-card>
+
+<md-card></md-card>
+<h1 class="pokemonDetails">Pokemon details</h1>
+
+<div class="col-lg-5 col-md-12" *ngIf = "pokemonDetailBool">
+  <div class="card card-profile">
+      <div class="card-avatar">
+          <a href="#pablo">
+              <img src="testP[0].sprite.front_default" />
+          </a>
+      </div>
+  </div>
+</div>
+<div class="col-lg-4 col-md-12" *ngIf = "pokemonDetailBool">
+  <div class="card" >
+      <div class="card-header">
+          <h4 class="title">Items</h4>
+      </div>
+      <div class="card-content table-responsive">
+          <table class="table table-hover">
+              <thead class="text-warning">
+                  <tr>
+                      <th>Pokemon</th>
+                      <th>Height</th>
+                      <th>Weight</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr >
+                      <td>{{testP[0].name}}</td>
+                      <td>{{testP[0].height}}</td>
+                      <td>{{testP[0].weight}}</td>
+                  </tr>                  
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>

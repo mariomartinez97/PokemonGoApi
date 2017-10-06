@@ -27,14 +27,19 @@ export class AppComponent {
   bag: PokemonEvolutions[] = [];
   items : Item [] = [];
   bagItems: Item[] = [];
-  testP :Pokemon;
+  testP :Pokemon []= [];
+  levelUp: string = "Need rare-cady to level up";
+  canEvolve: boolean = false;
+  pokemonDetailBool: boolean = false;
 
   
   constructor(
     private pokemonService: PokemonService,
     private pokemonEvolutionService: PokemonEvolutionService,
     private itemsService: ItemsService
-  ) { }
+  ) { 
+
+  }
 
   ngOnInit() {
     
@@ -42,6 +47,7 @@ export class AppComponent {
     console.log(Math.floor(Math.random() * 6) + 2);    
     
     this.loadMore();
+    //this.pokemonDetails("pikachu");
     
   }
 
@@ -92,6 +98,9 @@ export class AppComponent {
           deepCopy = JSON.parse(JSON.stringify(pokemon));
           this.bag.push(deepCopy);
           this.checkItemAdded();
+          if(deepCopy.species.item1 != null){ 
+            deepCopy.species.status = "Need " + deepCopy.species.item1 + " to evolve"; 
+          }
           console.log(pokemon.species.name + "has been added");
           console.log(deepCopy);
           // console.log(this.bag)
@@ -113,11 +122,47 @@ export class AppComponent {
     if(this.bag[index].species.number_of_Evolutions == 1 || this.bag[index].species.number_of_Evolutions == 2){
       
       //Check if it evolves with and item or not ---> should be able to check just for item 1
+      if(this.bag[index].species.item1 != null){
+        console.log("Correct check");
+        let itemNeeded = this.bagItems.findIndex(x => x.name ==this.bag[index].species.item1);
+        console.log("item needed:");
+        console.log(itemNeeded);
+        if(itemNeeded != -1 && this.bagItems[itemNeeded].quantity > 0){
+            if(this.bag[index].species.current_pokemon == 2){
+              this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
+              this.bag[index].species.current_pokemon ++;
+              this.bagItems[itemNeeded].quantity --;
+              this.bag[index].species.status = "No more evolutions";
+              this.bag[index].species.item1 = "";
+            }
+            else if(this.bag[index].species.current_pokemon == 1){
+              this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
+              this.bag[index].species.current_pokemon ++;
+              this.bagItems[itemNeeded].quantity --;              
+    
+                if(this.bag[index].species.number_of_Evolutions == 2){
+                  if(this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level == null){
+                    //Tell the user he needs a specific item for the second evolution
+                    this.bag[index].species.item1 = this.bag[index].species.item2;
+                    this.bag[index].species.status = "Need " + this.bag[index].species.item1 + " to evolve";
+                  }
+                  this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level; 
+                  this.bag[index].evolves_to[0].species.name = this.bag[index].evolves_to[0].evolves_to[0].species.name;   
+                  console.log(this.bag[index]);
+                }
+                else{ 
+                  this.bag[index].species.status = "No more evolutions"; 
+                  this.bag[index].species.item1 = "";
+              
+                }
+            }
 
+        }
+        else{ this.bag[index].species.status = "Need " + this.bag[index].species.item1 + " to evolve";}
 
-
+      }
       //Check if its on the second evolution stop evolutions     RESOLVER .species.status;
-      if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
+      else if(this.bag[index].evolves_to[0].evolution_details[0].min_level <= this.bag[index].species.actualLevel
         && this.bag[index].species.current_pokemon == 2){
           //Evolve
           this.bag[index].species.name = this.bag[index].evolves_to[0].species.name;
@@ -136,6 +181,8 @@ export class AppComponent {
             if(this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level == null){
               //Tell the user he needs a specific item for the second evolution
               this.bag[index].species.item1 = this.bag[index].species.item2;
+              this.bag[index].species.status = "Need " + this.bag[index].species.item1 + " to evolve";
+              
             }
             this.bag[index].evolves_to[0].evolution_details[0].min_level = this.bag[index].evolves_to[0].evolves_to[0].evolution_details[0].min_level; 
             this.bag[index].evolves_to[0].species.name = this.bag[index].evolves_to[0].evolves_to[0].species.name;   
@@ -160,7 +207,16 @@ export class AppComponent {
       console.log(this.bag[index]);
       this.bag[index].species.status = 'Evolve';      
     }
-    this.bag[index].species.actualLevel ++;
+    let i = this.bagItems.findIndex(x => x.name == 'rare-candy');
+    console.log(this.bagItems[i].quantity);    
+    if(this.bagItems[i].quantity > 0 ){
+      this.bag[index].species.actualLevel ++;  
+      this.bagItems[i].quantity --;
+      if( this.bagItems[i].quantity == 0){ this.levelUp = "Need rare-cady to level up";}
+    }
+    else{
+      this.levelUp = "Need rare-cady to level up";
+    }
     // console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
     if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
       console.log("Ready to evolve");
@@ -180,25 +236,44 @@ export class AppComponent {
   }
 
   getItems(){
-    this.itemsService.getItems(45,52)    
+    this.itemsService.getItems(48,52)    
     .then(res => {
-      this.items = res      
-      // console.log(this.items);
+      res.forEach(item => {
+        let contains1 = item.name.indexOf("candy")
+        if(contains1 != -1){this.items.push(item);}         
+      });
+      //this.items = res      
+      console.log(this.items);
       this.updateItems();
     });
+    this.itemsService.getItems(78,88)    
+    .then(res => {
+      res.forEach(item => {
+        let contains = item.name.indexOf("stone")
+        if(contains != -1){this.items.push(item);}        
+      });
+      this.updateItems();
+    });
+    
   }
   private updateItems(){
     this.items.forEach(element => {
       element.quantity = 1;      
       // console.log(element);
     });
+    this.items.sort(function(a,b){
+      var nameA = a.url.toLowerCase;
+      var nameB = b.url.toLowerCase;
+      if (nameA < nameB) //sort string ascending
+      return -1 
+    });    
   }
 
   private pokemonInfo(){
     let counter: number = 0;  
-    let deepCopy: string;  
+    let deepCopy: string;      
     this.pokemons.forEach(element => {
-      element.species.status = 'Need more candy to evolve';
+      element.species.status = 'Level up to evolve';
       element.species.current_pokemon = 1;
       if(element.evolves_to[0] == null){
         element.species.number_of_Evolutions = 0;
@@ -227,31 +302,53 @@ export class AppComponent {
         }              
       }     
     });    
-    
   }
    getRandomInt(min, max): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   pokemonDetails(pokemon: string){
+
     this.pokemonService.getPokemon(pokemon)
     .then (resp => {
-      this.testP = resp;
-      console.log(this.testP);
+      this.testP[0] = resp;
+      console.log("THIS IS THE SPRITE");
+      console.log(this.testP[0].sprite);
+      this.pokemonDetailBool = true;
     });
 
   }
 
   addItem(item: Item){
+    console.log(this.items);
     let deepCopy: Item;    
     if(!this.bagItems.some(y => y.name == item.name)){           
         deepCopy = JSON.parse(JSON.stringify(item));
         this.bagItems.push(deepCopy);        
+        if(deepCopy.name == 'rare-candy'){
+          this.levelUp = 'Level Up';
+        }
       }
       else{
         let index = this.bagItems.findIndex(x => x.name == item.name)    
         this.bagItems[index].quantity ++;
+        if(this.bagItems[index].name == 'rare-candy'){
+          this.levelUp = "Level Up";
+        }
         console.log(this.bagItems)
       }
+      let i = this.bagItems.findIndex(x => x.name == 'rare-candy');
+      if(this.bagItems[i] != null && this.bagItems[i].quantity < 0 ){
+        this.levelUp = "Level Up";
+        console.log(this.bagItems[i]);
+      }
     }
+    removePokemon(index: number){
+      this.bag.splice(index,1);
+    }
+    removeItem(index: number){
+      this.bagItems.splice(index,1);
+    }
+    
+    
 
 }

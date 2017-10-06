@@ -30,6 +30,7 @@ export class Species {
     status: string;
     item1: string;
     item2: string;
+    url: string;
 }
     
 export class EvolvesTo2 {
