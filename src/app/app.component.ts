@@ -4,7 +4,7 @@ import { PokemonService } from './pokemon.service';
 import { PokemonEvolutionService } from './pokemon-evolution.service';
 import { ItemsService } from './items.service';
 
-import { Pokemon } from './pokemon';
+import { Pokemon, Sprites } from './pokemon';
 import { PokemonEvolutions } from './pokemon-evolution';
 import { Item } from './items';
 
@@ -27,11 +27,12 @@ export class AppComponent {
   bag: PokemonEvolutions[] = [];
   items : Item [] = [];
   bagItems: Item[] = [];
-  testP :Pokemon []= [];
+  testP :Pokemon;
   levelUp: string = "Need rare-cady to level up";
   canEvolve: boolean = false;
   pokemonDetailBool: boolean = false;
-
+  sprite: Sprites;
+  testSprite: string;
   
   constructor(
     private pokemonService: PokemonService,
@@ -310,10 +311,16 @@ export class AppComponent {
 
     this.pokemonService.getPokemon(pokemon)
     .then (resp => {
-      this.testP[0] = resp;
+      this.testP = resp;
       console.log("THIS IS THE SPRITE");
-      console.log(this.testP[0].sprite);
-      this.pokemonDetailBool = true;
+      // this.pokemonDetailBool = true;
+    });
+    this.pokemonService.getSprite(pokemon)
+    .then(r => {
+      this.sprite = r;
+      console.log(this.sprite.front_default)
+      this.testSprite = this.sprite.front_default;
+      this.pokemonDetailBool = true;      
     });
 
   }
