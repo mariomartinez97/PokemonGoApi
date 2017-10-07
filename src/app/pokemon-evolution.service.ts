@@ -20,5 +20,9 @@ export class PokemonEvolutionService {
       .then(response => response.json().chain as PokemonEvolutions) 
       .catch();     
   }
+  // async getPokemon(id: number): Promise<PokemonEvolutions> {
+  //   const response = await this.http.get(`${this.ApiUrl}${id}/`).toPromise();
+  //   return response.json().chain as PokemonEvolutions    
+  // }
 }
 

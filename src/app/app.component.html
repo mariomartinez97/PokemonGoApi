@@ -1,12 +1,7 @@
-<!-- <div *ngFor="let p of pokemon">
-  <li>
-    {{p.name}}
-  </li>
-</div> -->
 <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" routerLink="/">
+        <a class="navbar-brand">
           <strong>Pokemon</strong>
         </a>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -17,201 +12,155 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-left">
-          <li><a >Bag</a></li>
-          <li><a >Pokemons</a></li>
-          <li><a >Items</a></li>
+          <li><a (click)="toggleMenu(1)">Bag</a></li>
+          <li><a (click)="toggleMenu(2)">Pokemons</a></li>
+          <li><a (click)="toggleMenu(3)">Items</a></li>
         </ul>
       </div>
     </div>
-  </nav>
+</nav>
 
-<md-card>
-  <!-- <button(click)="evolution()">Check Evolutions</button>       -->
+<div class="user-bag" *ngIf = "showB">
+    <div class="col-lg-8 col-md-12">
+        <div class="card" >
+            <div class="card-header" >
+                <p class="titleBagP">Pokemons</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Evolution Level</th>
+                            <th>Evolution Item</th>
+                            <th></th>
+                            <th></th> 
+                            <th>Remove</th>                       
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of bag; let i = index">
+                                
+                            <td (click)='pokemonDetails(p.species.name)'>{{p.species.name}}</td>
+                            <td>{{p.species.actualLevel}}</td>
+                            <td *ngIf="!p.species.noEvolutionLevel">{{p.evolves_to[0].evolution_details[0].min_level}}</td>
+                            <td *ngIf="p.species.noEvolutionLevel"></td>
+                            <td>{{p.species.item1}}</td>
+                            <td class="align-right"(click)='test(i)'><button>{{levelUp}}</button></td>                 
+                            <!-- <td (click)='checkEvolution(i)'><button [disabled]='!canEvolve'>{{p.species.status}}</button></td> -->
+                            <td (click)='checkEvolution(i)'><button [disabled]='canEvolve'>{{p.species.status}}</button></td>                      
+                            <td (click) = 'removePokemon(i)'><button>x</button></td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <h5 class="details">Click on Pokemon to see details</h5>                
+            </div>
+        </div>
+    </div>
+              
+    <div class="col-lg-4 col-md-12">
+        <div class="card" >
+            <div class="card-header">
+                <p class="titleBagI">Items</p>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                             <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of bagItems; let i = index">
+                            <td>{{p.name}}</td>
+                            <td>{{p.quantity}}</td>
+                            <td (click) = 'removeItem(i)'><button>x</button></td>
+                        </tr>                  
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-  <h1>THESE ARE THE  POKEMONS</h1>  
-<table class="table table-hover" width="100%">
-  <thead class="text-success">
-    <tr>
-      <!-- <th width="10%">Id</th> -->
-      <th width="35%">Name</th>
-      <th width="5%"></th>
-    </tr>
-  </thead>
-  
-
-  <tbody>
-    <!-- <td>{{pokemons[1].species.name}}</td> -->
-    <tr *ngFor="let p of pokemons; let i = index">
-      <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
-      <td class="align-mid">{{p.species.name}}</td>
-      <td class="align-mid"(click)='addToBagPokemons(p)'><button>Add to bag</button></td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-<div >
-
-  <h1>THIS IS THE BAG</h1>
-  <h2>These are your Pokemons</h2>
-  <table class="table table-hover" width="100%">
-      <thead class="text-success">
-        <tr>
-          <th align="align-left" width="35%">Name</th>
-          <th align="align-left" width="10%">Level</th>          
-          <th align="align-left" width="10%">Evolve Level</th>
-          <th align="align-left" width="10%">Evolve Item</th>          
-          <th align="align-mid" width="5%"></th>
-        </tr>
-      </thead>
-      
-    
-      <!-- <tbody>
-        <!-- <td>{{pokemons[1].species.name}}</td> -->
-        <!-- <tr *ngFor="let p of bag; let i = index">
-          <!-- <td class="align-mid">{{pokemons[0].species.name}}</td> -->
-          <!-- <td align=align-right>{{p.species.name}}</td>
-          <td class="align-right">{{p.species.actualLevel}}</td>                    
-          <td  class="align-right">{{p.evolves_to[0].evolution_details[0].min_level}}</td>   -->
-          <!-- <td class="align-right">{{p.evolution_info.status}}</td>      -->
-          <!-- <td class="align-right">{{p.species.item1}}</td>
-          <td class="align-right"(click)='test(i)'><button>Level Up</button></td>                 
-          <td class="align-right"(click)='checkEvolution(i)'><button>{{p.species.status}}</button></td>
-          <td class="align-right" onclick="window.scrollTo(0, 1800)" (click)='pokemonDetails(p.species.name)'><button>See details</button></td>
-          
-        </tr>
-      </tbody> --> 
-    </table>
 </div>
 
-<div>
+<div class="server-pokemons" *ngIf = "showP">
 
-    <h1>THESE ARE THE ITEMS</h1>
-    <!-- <h2>These are your Pokemons</h2> -->
     <table class="table table-hover" width="100%">
         <thead class="text-success">
-          <tr>
-            <th align="align-left" width="35%">Items</th>
-            <!-- <th align="align-left" width="10%">Level</th>          
-            <th align="align-left" width="10%">Evolve Level</th> -->
-            <th align="align-mid" width="5%">Add to bag</th>
-          </tr>
-        </thead>
-        
-      
+            <tr>
+                <th width="35%">Name</th>
+                <th width="5%"></th>
+            </tr>
+        </thead>                              
         <tbody>
-          <!-- <td>{{pokemons[1].species.name}}</td> -->
-          <tr *ngFor="let i of items">
-            <td align=align-right>{{i.name}}</td>            
-            <td class="align-right" (click)='addItem(i)'><button>+</button></td>
+            <tr *ngFor="let p of pokemons; let i = index">
+                <td class="align-mid">{{p.species.name}}</td>
+                <td class="align-mid"(click)='addToBagPokemons(p)'><button>Add to bag</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div class="server-items" *ngIf = "showI">
+
+    <table class="table table-hover" width="100%">
+        <thead class="text-success">
+            <tr>
+                <th align="align-left" width="35%">Items</th>
+                <th align="align-mid" width="5%"></th>
+            </tr>
+        </thead>                              
+        <tbody>
+            <tr *ngFor="let i of items">
+                <td align=align-right>{{i.name}}</td>            
+                <td class="align-right" (click)='addItem(i)'><button>Add to bag</button></td>
           </tr>
         </tbody>
-      </table>
+    </table>
 
 </div>
 
-<h1>POKEMONS</h1>
+<div class="pokemonDetails" *ngIf = "pokemonDetailBool">
 
-<div class="col-lg-8 col-md-12">
-  <div class="card" >
-      <div class="card-header" >
-          <h3 class="title">Pokemons</h3>
-      </div>
-      <div class="card-content table-responsive">
-          <table class="table table-hover">
-              <thead class="text-warning">
-                  <tr>
-                      <th>Name</th>
-                      <th>Level</th>
-                      <th>Evolution Level</th>
-                      <th>Evolution Item</th>
-                      <th></th>
-                      <th></th> 
-                      <th>Remove</th>                       
-                  </tr>
-              </thead>
-              <tbody>
-                   <tr *ngFor="let p of bag; let i = index">
-                  
-                      <td onclick="window.scrollTo(0, 1800)" (click)='pokemonDetails(p.species.name)'>{{p.species.name}}</td>
-                      <td>{{p.species.actualLevel}}</td>
-                      <td>{{p.evolves_to[0].evolution_details[0].min_level}}</td>
-                      <td>{{p.species.item1}}</td>
-                      <td class="align-right"(click)='test(i)'><button>{{levelUp}}</button></td>                 
-                      <!-- <td (click)='checkEvolution(i)'><button [disabled]='!canEvolve'>{{p.species.status}}</button></td> -->
-                      <td (click)='checkEvolution(i)'><button [disabled]='!canEvolve'>{{p.species.status}}</button></td>                      
-                      <td (click) = 'removePokemon(i)'><button>x</button></td>                      
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-  </div>
+    <div class="col-lg-4 col-md-12" >
+        <div class="card" >
+            <div class="card-header">
+                <h4 class="title"></h4>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-warning">
+                        <tr>
+                            <th>Pokemon</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>{{testP.name}}</td>
+                            <td>{{testP.height}}</td>
+                            <td>{{testP.weight}}</td>
+                        </tr>                  
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 col-md-12">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <img src='{{sprite.front_default}}' height="400" width="400" />                 
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="col-lg-4 col-md-12">
-  <div class="card" >
-      <div class="card-header">
-          <h3 class="title">Items</h3>
-      </div>
-      <div class="card-content table-responsive">
-          <table class="table table-hover">
-              <thead class="text-warning">
-                  <tr>
-                      <th>Item</th>
-                      <th>Quantity</th>
-                      <th>Remove</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let p of bagItems; let i = index">
-                      <td>{{p.name}}</td>
-                      <td>{{p.quantity}}</td>
-                      <td (click) = 'removeItem(i)'><button>x</button></td>
-                  </tr>                  
-              </tbody>
-          </table>
-      </div>
-  </div>
-</div>
 
-</md-card>
 
-<md-card></md-card>
-<h1 class="pokemonDetails">Pokemon details</h1>
 
-<div class="col-lg-5 col-md-12" *ngIf = "pokemonDetailBool">
-  <div class="card card-profile">
-      <div class="card-avatar">
-          <!-- <a href="#pablo"> -->
-              <!-- <h3>{{testSprite}}</h3> -->
-              <img src="testSprite" />
-          <!-- </a> -->
-      </div>
-  </div>
-</div>
-<div class="col-lg-4 col-md-12" *ngIf = "pokemonDetailBool">
-  <div class="card" >
-      <div class="card-header">
-          <h4 class="title">Items</h4>
-      </div>
-      <div class="card-content table-responsive">
-          <table class="table table-hover">
-              <thead class="text-warning">
-                  <tr>
-                      <th>Pokemon</th>
-                      <th>Height</th>
-                      <th>Weight</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr >
-                      <td>{{testP.name}}</td>
-                      <td>{{testP.height}}</td>
-                      <td>{{testP.weight}}</td>
-                  </tr>                  
-              </tbody>
-          </table>
-      </div>
-  </div>
-</div>

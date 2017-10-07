@@ -31,6 +31,8 @@ export class Species {
     item1: string;
     item2: string;
     url: string;
+    noEvolutionLevel:boolean;
+    
 }
     
 export class EvolvesTo2 {
