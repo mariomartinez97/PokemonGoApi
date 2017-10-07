@@ -14,15 +14,12 @@ import { PokemonEvolutionService } from './pokemon-evolution.service';
 import { ItemsService } from './items.service';
 
 
-import { CapitalizePipe } from './capitalize.pipe';
-
 import 'hammerjs';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    //CapitalizePipe
   ],
   imports: [
     BrowserModule,
@@ -37,7 +34,6 @@ import 'hammerjs';
     PokemonEvolutionService,
     ItemsService
   ],
-  // entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
