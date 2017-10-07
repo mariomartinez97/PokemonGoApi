@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 
-import { AppMaterialModule } from './app-material.module';
 
 
 import { PokemonService } from './pokemon.service';
@@ -27,7 +26,6 @@ import 'hammerjs';
     CommonModule,
     FormsModule,
     HttpModule,
-    AppMaterialModule
   ],
   providers: [
     PokemonService,
