@@ -188,8 +188,8 @@ export class AppComponent {
   test(index: number){
     if(this.bag[index].species.number_of_Evolutions != 0){
       if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
-        console.log("Ready to evolve");
-        console.log(this.bag[index]);
+        // console.log("Ready to evolve");
+        // console.log(this.bag[index]);
         this.bag[index].species.status = 'Evolve';      
       }
       let i = this.bagItems.findIndex(x => x.name == 'rare-candy');
@@ -199,10 +199,10 @@ export class AppComponent {
         if(this.bagItems[i].quantity > 0 ){
           this.bag[index].species.actualLevel ++;  
           this.bagItems[i].quantity --;
-          if( this.bagItems[i].quantity == 0){ this.levelUp = "Need rare-cady to level up";}
+          if( this.bagItems[i].quantity == 0){ this.levelUp = "Need rare-candy to level up";}
         }
         else{
-          this.levelUp = "Need rare-cady to level up";
+          this.levelUp = "Need rare-candy to level up";
         }           
       // console.log(this.bag[index].evolves_to[0].evolution_details[0].min_level);
       if(this.bag[index].evolves_to[0].evolution_details[0].min_level == this.bag[index].species.actualLevel){
